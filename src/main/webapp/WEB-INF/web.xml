@@ -4,14 +4,24 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
 	<servlet>
-		<servlet-name>demo</servlet-name>
-		<servlet-class>com.alan.training.servlets.DemoServlet</servlet-class>
+		<servlet-name>channel</servlet-name>
+		<servlet-class>com.alan.training.servlets.SocketDemo</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>demo</servlet-name>
-		<url-pattern>/demo</url-pattern>
+		<servlet-name>channel</servlet-name>
+		<url-pattern>/channel</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>testsign</servlet-name>
+		<servlet-class>com.alan.training.servlets.TestSignURL</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>testsign</servlet-name>
+		<url-pattern>/testsign</url-pattern>
 	</servlet-mapping>
 
+	
 	<servlet>
 		<servlet-name>guestbook</servlet-name>
 		<servlet-class>com.alan.training.servlets.GuestbookServlet</servlet-class>
@@ -44,6 +54,6 @@
 	</listener>
 
 	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 </web-app>

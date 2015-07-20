@@ -1,0 +1,55 @@
+<html>
+<script src="/_ah/channel/jsapi"></script>
+
+<body>
+    <script type="text/javascript">
+    var channel = new goog.appengine.Channel(token);
+	var socket = channel.open(handler);
+        onOpened = function() {
+            alert("opened");
+        }
+        var token = "{{ token }}";
+        
+        var handler = {
+            'onopen' : onOpened,
+            'onmessage' : onMessage,
+            'onerror' : function() {
+            },
+            'onclose' : function() {
+            }
+        };
+        
+        onMessage = function(msg) {
+            alert(msg.data);
+        }
+        
+
+        function sendMessage() {
+            $.post("/channel",{
+                mensaje: "Hola",
+                token: token
+            });   
+        }
+        
+        function getToken() {
+        	$.get("/channel",function(data){
+            	token = data;
+            	alert(token);
+            })
+            channel = new goog.appengine.Channel(token);
+        	socket = channel.open(handler);
+            socket.onopen = onOpened;
+            socket.onmessage = onMessage;
+        }
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <h1>Google Test Channel API</h1>
+    <form>
+        <input type="button" value="Token" onclick="getToken();">
+    </form>
+    <form>
+        <input type="button" value="Send" onclick="sendMessage();">
+    </form>
+    <div ></div>
+</body>
+</html>
