@@ -52,7 +52,8 @@ public class SocketDemo extends HttpServlet {
 		        .getChannelService();
 		LOG.info(req.getParameter("token") + "...."
 		        + req.getParameter("mensaje"));
-		channelService.sendMessage(new ChannelMessage(
-		        req.getParameter("token"), req.getParameter("mensaje")));
+		final ChannelMessage channelMessage = new ChannelMessage(
+		        req.getParameter("token"), req.getParameter("mensaje"));
+		channelService.sendMessage(channelMessage);
 	}
 }

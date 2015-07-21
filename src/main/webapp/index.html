@@ -3,53 +3,59 @@
 
 <body>
     <script type="text/javascript">
-    var channel = new goog.appengine.Channel(token);
-	var socket = channel.open(handler);
-        onOpened = function() {
-            alert("opened");
-        }
-        var token = "{{ token }}";
-        
-        var handler = {
-            'onopen' : onOpened,
-            'onmessage' : onMessage,
-            'onerror' : function() {
+    var token= "";
+    var socket = null;
+    var channel = null;
+    function getToken() {
+    	$.get("/demo",function(data){
+        	token = data;
+        	channel = new goog.appengine.Channel(token);
+        	socket = channel.open(handler);
+        	$('#token').html(token);
+        })
+    }
+    var handler = {
+            'onopen' : function() {
+            	$('#status').html("opened");
+            },
+            'onmessage' : function(msg) {
+            	$('#message').html(msg.data);
+            },
+            'onerror' : function(error) {
+            	$('#status').html(error.data);
             },
             'onclose' : function() {
+            	$('#status').html("closed");
             }
         };
-        
-        onMessage = function(msg) {
-            alert(msg.data);
-        }
-        
 
         function sendMessage() {
-            $.post("/channel",{
-                mensaje: "Hola",
+            $.post("/demo",{
+                mensaje: $('#txtMessage').val(),
                 token: token
             });   
         }
         
-        function getToken() {
-        	$.get("/channel",function(data){
-            	token = data;
-            	alert(token);
-            })
-            channel = new goog.appengine.Channel(token);
-        	socket = channel.open(handler);
-            socket.onopen = onOpened;
-            socket.onmessage = onMessage;
+        function closeChannel() {
+        	socket.close();
         }
+        
+        
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <h1>Google Test Channel API</h1>
+    <form>
+        <input type="button" value="Close" onclick="closeChannel();">
+    </form>
     <form>
         <input type="button" value="Token" onclick="getToken();">
     </form>
     <form>
         <input type="button" value="Send" onclick="sendMessage();">
+        <input type="text" id="txtMessage">
     </form>
-    <div ></div>
+    <div id="message"></div>
+    <div id="status"></div>
+    <div id="token"></div>
 </body>
 </html>
