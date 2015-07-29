@@ -24,11 +24,17 @@
 		<div class="container">
 			<h1>Estado : {{status}}</h1>
 		</div>
-		<div> Mensajes:
-		<div ng-repeat="mensaje in mensajes">{{mensaje}}</div>
+		<div> <p>Mensajes</p>
+			<div ng-repeat="mensaje in mensajes">{{mensaje}}</div>
 		</div>
-		<input type="text" ng-model="nuevoMensaje" >
-		<button ng-click="sendMessage()">Enviar</button>
+		<div>
+			<p>Elige un usuario</p>
+			<div ng-repeat="conectado in conectados"><input type="radio" ng-click="setOpcion(conectado.token)">{{conectado.id}}</input></div>
+		</div>
+		<div><p>Enviar un mensaje</p>
+			<input type="text" ng-model="nuevoMensaje" >
+			<button ng-click="sendMessage()">Enviar</button>
+		</div>
 	</div>
 
 	<div class="footer">

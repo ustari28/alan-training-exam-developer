@@ -2,10 +2,12 @@ app.controller('ChatController', ['$scope', 'ChatService', function($scope, Chat
 	$scope.title = 'Chatting';
 	var login = new Token();
 	$scope.mensajes = [];
+	$scope.conectados = [];
 	$scope.status = "Closed";
 	$scope.nuevoMensaje = "";
 	var channel = undefined;
 	var socket = undefined;
+	$scope.tokenSeleccionado = "";
 	var handler = {
 		'onopen' : function() {
 			$scope.status = "Opened";
@@ -28,7 +30,8 @@ app.controller('ChatController', ['$scope', 'ChatService', function($scope, Chat
 	}
 	
 	$scope.sendMessage = function() {
-		var mensaje = new Mensaje(login.token, $scope.nuevoMensaje);
+		console.log($scope.tokenSeleccionado);
+		var mensaje = new Mensaje($scope.tokenSeleccionado, $scope.nuevoMensaje);
 		ChatService.sendMessage(mensaje).then(function(response) {
 			console.log("mensaje enviado");
 		});
@@ -40,5 +43,12 @@ app.controller('ChatController', ['$scope', 'ChatService', function($scope, Chat
 		abrirSocket(login.token);
 	});
 	
-	$scope.$watch($scope.status);
+	$scope.setOpcion = function(opcion) {
+		$scope.tokenSeleccionado = opcion;
+	};
+	
+	ChatService.getConectado().then(function(response) {
+		$scope.conectados = response.data;
+	});
+	
 }]);
