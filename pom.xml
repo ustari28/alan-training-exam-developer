@@ -20,6 +20,7 @@
 		<appengine.target.version>1.9.23</appengine.target.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jersey.version>1.18</jersey.version>
+		<objectify.version>4.0rc2</objectify.version>
 	</properties>
 
 	<dependencies>
@@ -43,7 +44,7 @@
 		<dependency>
 			<groupId>com.googlecode.objectify</groupId>
 			<artifactId>objectify</artifactId>
-			<version>4.0.1</version>
+			<version>${objectify.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -107,6 +108,12 @@
 			<groupId>com.fasterxml.jackson.jaxrs</groupId>
 			<artifactId>jackson-jaxrs-json-provider</artifactId>
 			<version>2.6.0</version>
+		</dependency>
+		<!-- JODA DATETIME -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.3</version>
 		</dependency>
 
 
