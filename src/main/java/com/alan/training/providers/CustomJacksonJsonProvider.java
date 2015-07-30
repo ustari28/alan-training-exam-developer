@@ -35,7 +35,7 @@ public class CustomJacksonJsonProvider extends JacksonJsonProvider {
 			        SerializerProvider provider) throws IOException,
 			        JsonProcessingException {
 				if (dt != null) {
-					generator.writeString(dt.toString());
+					generator.writeString(dt.toDate().toString());
 				} else {
 					generator.writeNull();
 				}

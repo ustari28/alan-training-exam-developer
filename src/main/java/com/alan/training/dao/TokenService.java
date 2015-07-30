@@ -3,6 +3,7 @@
  */
 package com.alan.training.dao;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -32,13 +33,15 @@ public class TokenService extends AbstractService {
 			        .id(token.getId()).now();
 		}
 		if (encontrado != null) {
+			LOG.info("encontrado");
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date(encontrado.getFecha().getMillis()));
-			calendar.add(Calendar.HOUR, 1);
+			calendar.add(Calendar.HOUR, 2);
 
 			if (new DateTime(calendar.getTimeInMillis()).getMillis() > DateTime
 			        .now().getMillis()) {
 				existe = true;
+				LOG.warning("no hay que renovar");
 			}
 		}
 		return existe;
@@ -53,13 +56,28 @@ public class TokenService extends AbstractService {
 	}
 
 	public final Token guardar(final Token token) {
-		LOG.fine("guardando");
+		LOG.info("guardando");
 		token.setFecha(new DateTime());
 		this.service.save().entity(token).now();
 		return token;
 	}
 
-	public final List<Token> listado() {
-		return this.service.load().group(Token.class).type(Token.class).list();
+	public final List<Token> listado(final String email) {
+		final List<Token> existentes = this.service.load().group(Token.class)
+		        .type(Token.class).list();
+		final List<Token> parseados = new ArrayList<Token>();
+		final long fechaActual = DateTime.now().getMillis();
+		for (Token token : existentes) {
+			if (email.compareTo(token.getId()) != 0) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new Date(token.getFecha().getMillis()));
+				calendar.add(Calendar.HOUR, 2);
+				if (new DateTime(calendar.getTimeInMillis()).getMillis() < fechaActual) {
+					token.setEstado(0);
+				}
+				parseados.add(token);
+			}
+		}
+		return parseados;
 	}
 }

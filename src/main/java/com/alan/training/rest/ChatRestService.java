@@ -3,8 +3,6 @@
  */
 package com.alan.training.rest;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -17,7 +15,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import com.alan.training.core.Utilidades;
 import com.alan.training.dao.TokenService;
+import com.alan.training.model.ErrorMensaje;
 import com.alan.training.model.Mensaje;
 import com.alan.training.model.Token;
 import com.google.appengine.api.channel.ChannelMessage;
@@ -64,21 +64,15 @@ public class ChatRestService {
 		Token token = new Token();
 		User usuario = servicio.getCurrentUser();
 		if (usuario == null) {
-
-			try {
-				URI uri = new URI(servicio.createLoginURL(ui.getBaseUri()
-				        .toString()));
-				Response response = Response.seeOther(uri).build();
-				return response;
-			} catch (URISyntaxException e) {
-				LOG.severe("Error");
-			}
+			String url = servicio.createLoginURL(ui.getBaseUri().toString());
+			ErrorMensaje error = new ErrorMensaje();
+			error.setMensaje(url);
+			return Response.ok(error).build();
 		}
 		ChannelService channelService = ChannelServiceFactory
 		        .getChannelService();
 		token.setId(usuario.getEmail());
-		token.setToken(channelService.createChannel(servicio.getCurrentUser()
-		        .getEmail()));
+		token.setToken(channelService.createChannel(usuario.getEmail()));
 		if (!tokenService.existe(token)) {
 			tokenService.guardar(token);
 		} else {
@@ -90,7 +84,9 @@ public class ChatRestService {
 	@GET
 	@Path("/conectados")
 	public Response conectados() {
-		return Response.ok(tokenService.listado()).build();
+		UserService servicio = UserServiceFactory.getUserService();
+		User usuario = servicio.getCurrentUser();
+		return Response.ok(tokenService.listado(usuario.getEmail())).build();
 	}
 
 	@POST
@@ -98,8 +94,13 @@ public class ChatRestService {
 	public Response sendMessage(final Mensaje mensaje) {
 		ChannelService channelService = ChannelServiceFactory
 		        .getChannelService();
-		final ChannelMessage channelMessage = new ChannelMessage(
-		        mensaje.getToken(), mensaje.getMensaje());
+		final String channel = mensaje.getToken();
+		UserService servicio = UserServiceFactory.getUserService();
+		User usuario = servicio.getCurrentUser();
+		mensaje.setToken(null);
+		mensaje.setId(usuario.getEmail());
+		final ChannelMessage channelMessage = new ChannelMessage(channel,
+		        Utilidades.parserObjectListToJson(mensaje));
 		channelService.sendMessage(channelMessage);
 		return Response.ok().build();
 	}

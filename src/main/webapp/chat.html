@@ -1,53 +1,103 @@
 <!doctype html>
 <html>
-<script src="/_ah/channel/jsapi"></script>
 <head>
-<link
-	href="https://s3.amazonaws.com/codecademy-content/projects/bootstrap.min.css"
-	rel="stylesheet" />
-<link
-	href='https://fonts.googleapis.com/css?family=Roboto:500,300,700,400'
-	rel='stylesheet' type='text/css'>
-<link href="css/main.css" rel="stylesheet" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ejemplo de sockets</title>
+<script src="/_ah/channel/jsapi"></script> 
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/chat.css">
 
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <!-- Include the AngularJS library -->
 <script
 	src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+<script>
+	$(document).ready(function(){
+	    $('[data-toggle="tooltip"]').tooltip(); 
+	});
+</script>
 </head>
+<!-- FontAwesome -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <body ng-app="myApp">
-	<div class="header">
-		<div class="container">
+	<div id="veil" ng-show="loading"></div>
+	<div id="feedLoading" ng-show="loading">Cargando...</div>
+	<div class="container-fluid">
+		<div class = "container" ng-controller="ChatController">
+			<div class = "jumbotron">
+				<h1>Estado : {{status}}</h1>
+				<p>Pruebas de sockets AngularJS y Framework Google Application Engine</p>
+			</div>
+			<div class="row" ng-show="login">
+				<div class = "col-sm-4">
+				<table class = "table table-striped">
+					<thead>
+				      <tr>
+				        <th>Email</th>
+				        <th>Mensaje</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				    	<tr ng-repeat="mensaje in mensajes">
+							<td>{{mensaje.id}}</td>
+							<td>{{mensaje.mensaje}}</td>
+						</tr>
+				    </tbody>
+				</table>
+				</div>
+				<div class = "col-sm-4">
+					<table class = "table table-striped">
+					<thead>
+				      <tr>
+				        <th></th>
+				        <th>Email</th>
+				        <th>Estado</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+						<tr ng-repeat="conectado in conectados">
+							<td>
+								<input type="radio" ng-click="setOpcion(conectado.token)" name="selector"></input>
+							</td>
+							<td>{{conectado.id}}</td>
+							<td><span data-ng-if="conectado.estado == 1" class="glyphicon glyphicon-user" data-toggle="tooltip" title="Conectado"></span><span data-ng-if="conectado.estado == 0" class="glyphicon glyphicon-off" data-toggle="tooltip" title="No conectado"></span></td>
+						</tr>
+					</tbody>
+					</table>
+				</div>
+				<div class = "col-sm-4">
+					<table class = "table">
+						<thead>
+					      <tr>
+					        <th>Nuevo mensaje</th>
+					      </tr>
+					    </thead>
+					    <tbody>
+					    <tr>
+					    	<td>
+							<input type="text" ng-model="nuevoMensaje" >
+							<button ng-click="sendMessage()" class="btn btn-primary active">Enviar</button>
+							<td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div ng-show="!login"><a href="urlLogin">Please Login</a></div>
+		</div>
+	
+		<div class="footer">
+			<div>
+				<h2>Available for iPhone and Android.</h2>
+			</div>
 		</div>
 	</div>
-
-	<div class="main" ng-controller="ChatController">
-		<div class="container">
-			<h1>Estado : {{status}}</h1>
-		</div>
-		<div> <p>Mensajes</p>
-			<div ng-repeat="mensaje in mensajes">{{mensaje}}</div>
-		</div>
-		<div>
-			<p>Elige un usuario</p>
-			<div ng-repeat="conectado in conectados"><input type="radio" ng-click="setOpcion(conectado.token)">{{conectado.id}}</input></div>
-		</div>
-		<div><p>Enviar un mensaje</p>
-			<input type="text" ng-model="nuevoMensaje" >
-			<button ng-click="sendMessage()">Enviar</button>
-		</div>
-	</div>
-
-	<div class="footer">
-		<div class="container">
-			<h2>Available for iPhone and Android.</h2>
-			<img
-				src="https://s3.amazonaws.com/codecademy-content/projects/shutterbugg/app-store.png"
-				width="120px" /> <img
-				src="https://s3.amazonaws.com/codecademy-content/projects/shutterbugg/google-play.png"
-				width="110px" />
-		</div>
-	</div>
-
 
 	<!-- Modules -->
 	<script src="js/app.js"></script>

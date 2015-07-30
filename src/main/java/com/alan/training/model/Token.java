@@ -20,6 +20,29 @@ public class Token {
 	private String id;
 	private String token;
 	private DateTime fecha;
+	private int estado;
+
+	/**
+	 * 
+	 */
+	public Token() {
+		estado = 1;
+	}
+
+	/**
+	 * @return the estado
+	 */
+	public final int getEstado() {
+		return estado;
+	}
+
+	/**
+	 * @param estado
+	 *            the estado to set
+	 */
+	public final void setEstado(int estado) {
+		this.estado = estado;
+	}
 
 	/**
 	 * @return the id
