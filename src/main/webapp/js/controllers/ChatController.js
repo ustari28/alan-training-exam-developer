@@ -43,12 +43,17 @@ app.controller('ChatController', ['$scope', '$rootScope', 'ChatService', functio
 			$rootScope.loading = false;;
 		});
 	};
+	
 	ChatService.getToken().then(function(response) {
 		login.id = response.data.id;
 		login.token = response.data.token;
 		login.fecha = response.data.fecha;
-		abrirSocket(login.token);
-		$scope.login = true;
+		if(response.data.token != undefined) {
+			abrirSocket(login.token);
+			$scope.login = true;
+		} else {
+			$scope.urlLogin = response.data.mensaje;
+		}
 		$rootScope.loading = false;
 	}, function(error) {
 		$scope.urlLogin = error.data.mensaje;
@@ -59,12 +64,15 @@ app.controller('ChatController', ['$scope', '$rootScope', 'ChatService', functio
 	$scope.setOpcion = function(opcion) {
 		$scope.tokenSeleccionado = opcion;
 	};
-	$scope.loading = true;
-	ChatService.getConectado().then(function(response) {
-		$scope.conectados = response.data;
-		$rootScope.loading = false;
-	}, function(error) {
-		$rootScope.loading = false;
-	});
+	
+	if($scope.login) {
+		$scope.loading = true;
+		ChatService.getConectado().then(function(response) {
+			$scope.conectados = response.data;
+			$rootScope.loading = false;
+		}, function(error) {
+			$rootScope.loading = false;
+		});
+	}
 	
 }]);
