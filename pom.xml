@@ -24,6 +24,11 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+		    <groupId>org.reflections</groupId>
+		    <artifactId>reflections</artifactId>
+		    <version>0.9.10</version>
+		</dependency>
 		<!-- Compile/runtime dependencies -->
 		<dependency>
 			<groupId>com.google.apis</groupId>
