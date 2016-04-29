@@ -12,8 +12,9 @@ import java.lang.annotation.Target;
  * @author alan
  *
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GAEService {
+public @interface GAEResource {
 
+    String service();
 }
