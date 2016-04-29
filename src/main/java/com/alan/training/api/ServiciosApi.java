@@ -35,4 +35,11 @@ public class ServiciosApi {
         servicioGAE.hello();
         return t;
     }
+
+    @ApiMethod(name = "holapost", httpMethod = HttpMethod.POST, path = "hola")
+    public Token apiPost(Token token) {
+        System.out.println(token.toString());
+        servicioGAE.hello();
+        return token;
+    }
 }
