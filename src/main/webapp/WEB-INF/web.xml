@@ -82,7 +82,7 @@
 		<servlet-name>jersey</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
-
+<!-- APPENGINE ENDPOINT -->
 	<servlet>
         <servlet-name>SystemServiceServlet</servlet-name>
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>

@@ -24,7 +24,7 @@ public class ChickensFactory {
         return factory;
     }
 
-    public void putMap(String s, String obj) {
+    public void put(String s, String obj) {
         mapChickens.put(s, obj);
         try {
             mapImplementations.put(obj, Class.forName(obj).newInstance());
@@ -43,5 +43,13 @@ public class ChickensFactory {
     public Object get(String s) {
         String clazz = mapChickens.get(s);
         return mapImplementations.get(clazz);
+    }
+
+    public Map<String, Object> getImpls() {
+        return mapImplementations;
+    }
+
+    public void update(Map<String, Object> maps) {
+        mapImplementations.putAll(maps);
     }
 }

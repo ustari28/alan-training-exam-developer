@@ -5,10 +5,6 @@ package com.alan.training.model;
 
 import org.joda.time.DateTime;
 
-import com.alan.training.providers.CustomDeserializer;
-import com.alan.training.providers.CustomSerializer;
-import com.google.appengine.repackaged.org.codehaus.jackson.map.annotate.JsonDeserialize;
-import com.google.appengine.repackaged.org.codehaus.jackson.map.annotate.JsonSerialize;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -23,8 +19,6 @@ public class Token {
     @Id
     private String id;
     private String token;
-    @JsonDeserialize(using = CustomDeserializer.class)
-    @JsonSerialize(using = CustomSerializer.class)
     private DateTime fecha;
     private int estado;
 
