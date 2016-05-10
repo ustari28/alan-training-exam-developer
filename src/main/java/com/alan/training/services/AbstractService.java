@@ -30,11 +30,9 @@ public abstract class AbstractService {
                 try {
                     f.set(this, ChickensFactory.getInstance().get(service.service()));
                 } catch (IllegalArgumentException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    e.printStackTrace(System.out);
                 } catch (IllegalAccessException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    e.printStackTrace(System.out);
                 }
                 f.setAccessible(accesible);
             }

@@ -46,12 +46,8 @@ public class AnnotationLoadContextListener implements ServletContextListener {
                 }
             }
         }
-        // scan for fill class marked on @GAEService and It contains fields with annotation @GAEResource
-        // System.out.println("proxies");
-        // for (String clazz : ChickensFactory.getInstance().getImpls().keySet()) {
-        // Object obj = ChickensFactory.getInstance().getImpls().get(clazz);
-        // Proxy.newProxyInstance(obj.getClass().getClassLoader(), new Class[] { IGAEService.class }, handlerProxy);
-        // }
+        // scan @GAEResource at chickens
+        ChickensFactory.getInstance().refill();
     }
 
     /*
@@ -60,7 +56,7 @@ public class AnnotationLoadContextListener implements ServletContextListener {
      * @see javax.servlet.ServletContextListener#contextDestroyed(javax.servlet.ServletContextEvent)
      */
     public void contextDestroyed(ServletContextEvent sce) {
-        // TODO Auto-generated method stub
+        ChickensFactory.getInstance().destroy();
 
     }
 

@@ -7,8 +7,8 @@ import javax.ws.rs.HttpMethod;
 
 import com.alan.training.core.GAEResource;
 import com.alan.training.model.Token;
+import com.alan.training.services.AbstractService;
 import com.alan.training.services.ServiceDAO;
-import com.alan.training.services.WizzardService;
 import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -18,12 +18,7 @@ import com.google.api.server.spi.config.ApiMethod;
  * 
  */
 @Api(name = "testapi", version = "v1", defaultVersion = AnnotationBoolean.TRUE)
-public class ServiciosApi {
-
-    public ServiciosApi() {
-        super();
-        WizzardService.getInstance().wizzard(this);
-    }
+public class ServiciosApi extends AbstractService {
 
     @GAEResource(service = "ServiceDAOImpl")
     private ServiceDAO servicioGAE;
