@@ -25,21 +25,23 @@ import com.google.common.collect.Lists;
  */
 public class AnnotationLoadContextListener implements ServletContextListener {
 
+    private static final String PARAM_PACKAGE = "packages";
+    private static final String PARAM_SEPARATOR = ",";
+
     /*
      * (non-Javadoc)
      * 
      * @see javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
      */
     public void contextInitialized(ServletContextEvent sce) {
-        List<String> packagesChickens = Lists.newArrayList();
+
+        List<String> packagesChickens = Lists.newArrayList(sce.getServletContext().getInitParameter(PARAM_PACKAGE)
+                .split(PARAM_SEPARATOR));
         // scan for create factory chickens
-        packagesChickens.add("com.alan.training.services");
-        packagesChickens.add("com.alan.training.api");
-        System.out.println("creando pojos");
         for (String pkg : packagesChickens) {
-            Set<Class<?>> classes = new Reflections(new ConfigurationBuilder().setUrls(ClasspathHelper.forPackage(pkg))
-                    .setScanners(new SubTypesScanner(), new TypeAnnotationsScanner()))
-                    .getTypesAnnotatedWith(GAEService.class);
+            Set<Class<?>> classes = new Reflections(new ConfigurationBuilder().setUrls(
+                    ClasspathHelper.forPackage(pkg.trim())).setScanners(new SubTypesScanner(),
+                    new TypeAnnotationsScanner())).getTypesAnnotatedWith(GAEService.class);
             for (Class<?> clazz : classes) {
                 if (clazz.isAnnotationPresent(GAEService.class)) {
                     ChickensFactory.getInstance().put(clazz.getSimpleName(), clazz.getCanonicalName());
