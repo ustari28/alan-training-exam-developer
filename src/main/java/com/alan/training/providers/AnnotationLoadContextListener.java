@@ -5,6 +5,7 @@ package com.alan.training.providers;
 
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -27,6 +28,7 @@ public class AnnotationLoadContextListener implements ServletContextListener {
 
     private static final String PARAM_PACKAGE = "packages";
     private static final String PARAM_SEPARATOR = ",";
+    private static final Logger LOG = Logger.getLogger(AnnotationLoadContextListener.class.getSimpleName());
 
     /*
      * (non-Javadoc)
@@ -34,7 +36,7 @@ public class AnnotationLoadContextListener implements ServletContextListener {
      * @see javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
      */
     public void contextInitialized(ServletContextEvent sce) {
-
+        LOG.info("starting chickens's farm");
         List<String> packagesChickens = Lists.newArrayList(sce.getServletContext().getInitParameter(PARAM_PACKAGE)
                 .split(PARAM_SEPARATOR));
         // scan for create factory chickens
@@ -48,8 +50,10 @@ public class AnnotationLoadContextListener implements ServletContextListener {
                 }
             }
         }
+        LOG.info("Refill singletones");
         // scan @GAEResource at chickens
         ChickensFactory.getInstance().refill();
+        LOG.info("chickens's farm has been created");
     }
 
     /*
@@ -59,7 +63,6 @@ public class AnnotationLoadContextListener implements ServletContextListener {
      */
     public void contextDestroyed(ServletContextEvent sce) {
         ChickensFactory.getInstance().destroy();
-
     }
 
 }
