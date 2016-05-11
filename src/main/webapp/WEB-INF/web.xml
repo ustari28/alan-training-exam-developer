@@ -11,6 +11,15 @@
 	<listener>
 		<listener-class>com.alan.training.providers.AnnotationLoadContextListener</listener-class>
 	</listener>
+	
+	<context-param>
+	    <param-name>contextConfigLocation</param-name>
+	    <param-value>/WEB-INF/spring-servlet.xml</param-value>
+	</context-param>
+	
+	<listener>
+	    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 	<servlet>
 		<servlet-name>channel</servlet-name>
 		<servlet-class>com.alan.training.servlets.SocketDemo</servlet-class>
@@ -95,7 +104,7 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>com.alan.training.api.ServiciosApi</param-value>
+            <param-value>com.alan.training.api.ServiciosApi,com.alan.training.api.SpringApi</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -106,4 +115,17 @@
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
+	
+	<servlet>
+	    <servlet-name>spring</servlet-name>
+	    <servlet-class>
+	        org.springframework.web.servlet.DispatcherServlet
+	    </servlet-class>
+	    <load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+	    <servlet-name>spring</servlet-name>
+	    <url-pattern>/spring/*</url-pattern>
+	</servlet-mapping>
 </web-app>
