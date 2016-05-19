@@ -9,23 +9,20 @@
 
 	<mvc:annotation-driven />
     <context:component-scan base-package="com.alan.training.spring, com.alan.training.api" />
-<!--     <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver"> -->
-<!-- 	  <property name="order" value="1" /> -->
-<!-- 	  <property name="defaultViews"> -->
-<!-- 		<list> -->
-<!-- 		  JSON View -->
-<!-- 		  <bean -->
-<!-- 			class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"> -->
-<!-- 		  </bean> -->
-		  
-<!-- 		 </list> -->
-<!-- 	  </property> -->
-<!-- 	</bean> -->
-<!-- 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"> -->
-<!-- 		<property name="messageConverters"> -->
-<!-- 			<list> -->
-<!-- 			    <bean class="org.springframework.http.converter.json.GsonHttpMessageConverter"/> -->
-<!-- 			</list> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
+    <bean id="customObjectMapper" class="com.alan.training.providers.CustomObjectMapper" />
+    <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+	  <property name="objectMapper" ref="customObjectMapper"/>
+	</bean>
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+	  <property name="order" value="1" />
+	  <property name="messageConverters">
+	    <list>
+	      <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+	      <bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+	      <bean class="org.springframework.http.converter.ResourceHttpMessageConverter" />
+	      <bean class="org.springframework.http.converter.FormHttpMessageConverter" />
+	      <ref bean="mappingJacksonHttpMessageConverter"/>
+	    </list>
+	  </property>
+	</bean>
 </beans>
