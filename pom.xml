@@ -21,6 +21,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jersey.version>1.18</jersey.version>
 		<objectify.version>4.0rc2</objectify.version>
+		<local.id>alan-training-exam-developer</local.id>
 	</properties>
 	
 	<profiles>
@@ -53,6 +54,54 @@
 						</configuration>
 					</plugin>
 				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<appengine.app.id>${local.id}</appengine.app.id>
+			</properties>
+			<build>
+				<plugins>
+		            <plugin>
+		               <groupId>org.apache.maven.plugins</groupId>
+		               <artifactId>maven-compiler-plugin</artifactId>
+		               <version>3.1</version>
+		               <configuration>
+		               		<source>1.7</source>
+					   		<target>1.7</target>
+					   		<include>com/alan/training/**/*.java</include>
+		               </configuration>
+		            </plugin>
+		          </plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>providers</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<appengine.app.id>${local.id}</appengine.app.id>
+			</properties>
+			<build>
+				<plugins>
+		            <plugin>
+		               <groupId>org.apache.maven.plugins</groupId>
+		               <artifactId>maven-compiler-plugin</artifactId>
+		               <version>3.1</version>
+		               <configuration>
+		               		<source>1.7</source>
+					   		<target>1.7</target>
+					   		<includes>
+					   			<include>com/alan/training/providers/**/*.java</include>
+					   		</includes>
+		               </configuration>
+		            </plugin>
+		          </plugins>
 			</build>
 		</profile>
 	</profiles>
