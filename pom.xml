@@ -63,7 +63,10 @@
 			</activation>
 			<properties>
 				<appengine.app.id>${local.id}</appengine.app.id>
+				<module>default</module>
 				<module.package>com/alan/**/*.java</module.package>
+				<spring.packages>com.alan.training.spring, com.alan.training.api, com.alan.tasks.ws</spring.packages>
+				<entorno>local</entorno>
 			</properties>
 		</profile>
 		<profile>
@@ -75,6 +78,7 @@
 				<appengine.app.id>${local.id}</appengine.app.id>
 				<module>default</module>
 				<module.package>com/alan/training/**/*.java</module.package>
+				<spring.packages>com.alan.training.spring, com.alan.training.api</spring.packages>
 			</properties>
 		</profile>
 		<profile>
@@ -86,6 +90,16 @@
 				<appengine.app.id>${local.id}</appengine.app.id>
 				<module>tasks</module>
 				<module.package>com/alan/tasks/**/*.java</module.package>
+				<spring.packages>com.alan.tasks.ws</spring.packages>
+			</properties>
+		</profile>
+		<profile>
+			<id>pro</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<entorno>pro</entorno>
 			</properties>
 		</profile>
 	</profiles>
@@ -247,8 +261,13 @@
 	</dependencies>
 
 	<build>
+		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 		<outputDirectory>target/${project.artifactId}/WEB-INF/classes</outputDirectory>
-
+		<resources>
+			<resource>
+				<directory>src/main/resources/${entorno}/${module}</directory>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -266,7 +285,6 @@
 					</webResources>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>com.google.appengine</groupId>
 				<artifactId>appengine-maven-plugin</artifactId>
@@ -285,9 +303,45 @@
 			   		<target>1.7</target>
 			   		<includes>
 			   			<include>${module.package}</include>
+			   			<include>com/alan/common/**/*.java</include>
 			   		</includes>
                </configuration>
             </plugin>
+            <plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.2</version>
+				<executions>
+					<execution>
+						<id>Replace module's info into spring-servlet.xml</id>
+						<phase>package</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<file>
+								${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/spring-servlet.xml
+							</file>
+							<token>@@spring.packages@@</token>
+							<value>${spring.packages}</value>
+						</configuration>
+					</execution>
+					<execution>
+						<id>Replace module's info into appengine-web.xml</id>
+						<phase>package</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+						<configuration>
+							<file>
+								${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/appengine-web.xml
+							</file>
+							<token>@@module@@</token>
+							<value>${module}</value>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>

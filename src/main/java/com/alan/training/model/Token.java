@@ -21,6 +21,7 @@ public class Token {
     private String token;
     private DateTime fecha;
     private int estado;
+    private String entorno;
 
     /**
 	 * 
@@ -98,6 +99,21 @@ public class Token {
     @Override
     public String toString() {
         return "Token [id=" + id + ", token=" + token + ", fecha=" + fecha + ", estado=" + estado + "]";
+    }
+
+    /**
+     * @return the entorno
+     */
+    public final String getEntorno() {
+        return entorno;
+    }
+
+    /**
+     * @param entorno
+     *            the entorno to set
+     */
+    public final void setEntorno(String entorno) {
+        this.entorno = entorno;
     }
 
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.alan.training.providers;
+package com.alan.common;
 
 import java.util.logging.Logger;
 

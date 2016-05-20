@@ -23,8 +23,9 @@ public class SpringApi {
     @Autowired
     @Qualifier("PersonalComputerImpl")
     private ISpringService pcImpl;
+    String entorno;
 
-    @RequestMapping(value = "/hola", method = RequestMethod.GET)
+    @RequestMapping(value = "/app/hola", method = RequestMethod.GET)
     public Token api() {
         Token t = new Token();
         t.setId("alan");
@@ -32,7 +33,7 @@ public class SpringApi {
         return t;
     }
 
-    @RequestMapping(value = "/hola", method = RequestMethod.POST)
+    @RequestMapping(value = "/app/hola", method = RequestMethod.POST)
     public Token apiPost(@RequestBody Token t) {
         pcImpl.sayHello();
         System.out.println(t.toString());
