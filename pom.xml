@@ -63,46 +63,30 @@
 			</activation>
 			<properties>
 				<appengine.app.id>${local.id}</appengine.app.id>
+				<module.package>com/alan/**/*.java</module.package>
 			</properties>
-			<build>
-				<plugins>
-		            <plugin>
-		               <groupId>org.apache.maven.plugins</groupId>
-		               <artifactId>maven-compiler-plugin</artifactId>
-		               <version>3.1</version>
-		               <configuration>
-		               		<source>1.7</source>
-					   		<target>1.7</target>
-					   		<include>com/alan/training/**/*.java</include>
-		               </configuration>
-		            </plugin>
-		          </plugins>
-			</build>
 		</profile>
 		<profile>
-			<id>providers</id>
+			<id>default</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
 				<appengine.app.id>${local.id}</appengine.app.id>
+				<module>default</module>
+				<module.package>com/alan/training/**/*.java</module.package>
 			</properties>
-			<build>
-				<plugins>
-		            <plugin>
-		               <groupId>org.apache.maven.plugins</groupId>
-		               <artifactId>maven-compiler-plugin</artifactId>
-		               <version>3.1</version>
-		               <configuration>
-		               		<source>1.7</source>
-					   		<target>1.7</target>
-					   		<includes>
-					   			<include>com/alan/training/providers/**/*.java</include>
-					   		</includes>
-		               </configuration>
-		            </plugin>
-		          </plugins>
-			</build>
+		</profile>
+		<profile>
+			<id>tasks</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<appengine.app.id>${local.id}</appengine.app.id>
+				<module>tasks</module>
+				<module.package>com/alan/tasks/**/*.java</module.package>
+			</properties>
 		</profile>
 	</profiles>
 
@@ -292,6 +276,18 @@
 					<server>preview.appengine.google.com</server>
 				</configuration>
 			</plugin>
+			<plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-compiler-plugin</artifactId>
+               <version>3.1</version>
+               <configuration>
+               		<source>1.7</source>
+			   		<target>1.7</target>
+			   		<includes>
+			   			<include>${module.package}</include>
+			   		</includes>
+               </configuration>
+            </plugin>
 		</plugins>
 	</build>
 </project>
