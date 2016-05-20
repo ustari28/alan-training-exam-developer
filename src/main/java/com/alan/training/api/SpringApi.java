@@ -5,6 +5,7 @@ package com.alan.training.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,7 @@ public class SpringApi {
     @Autowired
     @Qualifier("PersonalComputerImpl")
     private ISpringService pcImpl;
+    @Value("${APP.ENTORNO}")
     String entorno;
 
     @RequestMapping(value = "/app/hola", method = RequestMethod.GET)
@@ -30,6 +32,7 @@ public class SpringApi {
         Token t = new Token();
         t.setId("alan");
         pcImpl.sayHello();
+        System.out.println(entorno);
         return t;
     }
 

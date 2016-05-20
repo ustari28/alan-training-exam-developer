@@ -25,4 +25,5 @@
 	    </list>
 	  </property>
 	</bean>
+	<context:property-placeholder location="classpath:app.properties" />
 </beans>
